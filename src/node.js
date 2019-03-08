@@ -21,20 +21,33 @@ class Node {
 
   remove() {
     if (this.parent == null) return;
-	this.parent.removeChild(this);
-	this.left.removeChild(this.left);
-	this.right.removeChild(this.right);
+    var that = this;
+	this.parent.removeChild(that);
   }
 
   swapWithParent() {
 	if (this.parent == null) return;
-	var parent = this.parent;
-    if (this.parent.left == this) {
-		this.parent = parent.parent;
-		parent.parent = this;
-		this.left = parent;
+  const parent = this.parent;
+  const par_left = parent.left;
+  const par_right = parent.right;
+  var par_par = parent.parent;
 
+    if (parent.left === this) {//если это левый детеныш
+      this.parent = par_par;
+      parent.parent = this;
+      parent.parent.parent = par_par;
+      parent.left = this.left;
+      parent.right = this.right;
+      this.left = parent;
+      this.right = par_right;
     } else {
+      this.parent = par_par;
+      parent.parent = this;
+      parent.left = this.left;
+      parent.right = this.right;
+      this.right = parent;
+      this.left = par_left;
+
     }
   }
 }
